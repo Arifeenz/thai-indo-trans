@@ -1,4 +1,5 @@
 {
+  "outputDirectory": "public",
   "rewrites": [
     { "source": "/chat", "destination": "/api/chat" },
     { "source": "/login", "destination": "/api/login" }
