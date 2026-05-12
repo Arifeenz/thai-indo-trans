@@ -7,21 +7,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0e1117;
-  --surface: #161b27;
-  --surface2: #1d2435;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.12);
-  --text: #e8eaf0;
-  --text2: #8b92a8;
-  --text3: #555d72;
-  --accent: #4ade80;
-  --accent2: #22c55e;
-  --info: #60a5fa;
-  --warn: #fbbf24;
-  --red: #f87171;
-  --radius: 14px;
-  --radius-sm: 8px;
+  --bg: #0e1117; --surface: #161b27; --surface2: #1d2435;
+  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+  --text: #e8eaf0; --text2: #8b92a8; --text3: #555d72;
+  --accent: #4ade80; --accent2: #22c55e; --info: #60a5fa;
+  --warn: #fbbf24; --red: #f87171; --radius: 14px; --radius-sm: 8px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -30,214 +20,179 @@ body {
   min-height: 100vh; display: flex; flex-direction: column;
   align-items: center; padding: 0 1rem 2rem;
 }
-
-/* Login screen */
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(74,222,128,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,0.03) 1px,transparent 1px);
+  background-size: 40px 40px; pointer-events: none; z-index: 0;
+}
+.container { width: 100%; max-width: 680px; position: relative; z-index: 1; }
 .login-screen {
   position: fixed; inset: 0; background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 100;
+  display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem;
 }
 .login-box {
   background: var(--surface); border: 0.5px solid var(--border2);
-  border-radius: var(--radius); padding: 2.5rem 2rem;
-  width: 100%; max-width: 360px; text-align: center;
+  border-radius: var(--radius); padding: 2.5rem 2rem; width: 100%; max-width: 360px; text-align: center;
 }
 .login-logo { font-size: 40px; margin-bottom: 1rem; }
 .login-title {
   font-size: 18px; font-weight: 600; margin-bottom: 4px;
-  background: linear-gradient(135deg, #4ade80, #60a5fa);
+  background: linear-gradient(135deg,#4ade80,#60a5fa);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 .login-sub { font-size: 12px; color: var(--text3); margin-bottom: 1.5rem; }
 .login-input {
   width: 100%; padding: 11px 14px; border-radius: var(--radius-sm);
   border: 0.5px solid var(--border2); background: var(--bg);
-  color: var(--text); font-size: 15px; font-family: 'Sora', sans-serif;
+  color: var(--text); font-size: 15px; font-family: 'Sora',sans-serif;
   text-align: center; letter-spacing: 4px; margin-bottom: 10px;
 }
 .login-input:focus { outline: none; border-color: var(--accent); }
 .login-btn {
   width: 100%; padding: 11px; border-radius: var(--radius-sm);
   background: var(--accent); color: #000; border: none;
-  font-size: 14px; font-weight: 600; cursor: pointer;
-  font-family: 'Sora', sans-serif; transition: all 0.15s;
+  font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Sora',sans-serif; transition: all 0.15s;
 }
 .login-btn:hover { background: var(--accent2); }
 .login-err { font-size: 12px; color: var(--red); margin-top: 8px; min-height: 18px; }
-body::before {
-  content: ''; position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(74,222,128,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(74,222,128,0.03) 1px, transparent 1px);
-  background-size: 40px 40px; pointer-events: none; z-index: 0;
-}
-.container { width: 100%; max-width: 680px; position: relative; z-index: 1; }
-
-header { padding: 2rem 0 1.5rem; display: flex; align-items: center; gap: 14px; }
-.logo { font-size: 28px; }
+header { padding: 1.5rem 0 1.25rem; display: flex; align-items: center; gap: 12px; }
+.logo { font-size: 26px; }
 .header-text h1 {
-  font-size: 20px; font-weight: 600; letter-spacing: -0.3px;
-  background: linear-gradient(135deg, #4ade80, #60a5fa);
+  font-size: 18px; font-weight: 600; letter-spacing: -0.3px;
+  background: linear-gradient(135deg,#4ade80,#60a5fa);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
-.header-text p { font-size: 12px; color: var(--text3); margin-top: 2px; }
-
-.api-setup {
-  background: var(--surface); border: 0.5px solid var(--border2);
-  border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.25rem;
-}
-.api-setup.hidden { display: none; }
-.api-row { display: flex; gap: 10px; align-items: center; }
-.api-label { font-size: 12px; color: var(--text2); white-space: nowrap; }
-.api-input {
-  flex: 1; background: var(--bg); border: 0.5px solid var(--border2);
-  border-radius: var(--radius-sm); padding: 8px 12px;
-  color: var(--text); font-size: 13px; font-family: 'Sora', monospace;
-}
-.api-input:focus { outline: none; border-color: var(--accent); }
-.api-btn {
-  padding: 8px 16px; border-radius: var(--radius-sm);
-  background: var(--accent); color: #000; border: none;
-  font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
-}
-.api-btn:hover { background: var(--accent2); }
-.api-status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--accent); }
-.api-status.hidden { display: none; }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-.sit-wrap { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.25rem; align-items: center; }
-.sit-label { font-size: 11px; color: var(--text3); margin-right: 2px; }
+.header-text p { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.sit-wrap { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+.sit-label { font-size: 11px; color: var(--text3); margin-right: 2px; white-space: nowrap; }
 .sit-btn {
-  font-size: 12px; padding: 5px 13px; border-radius: 20px;
+  font-size: 11px; padding: 4px 11px; border-radius: 20px;
   border: 0.5px solid var(--border2); background: transparent;
-  color: var(--text2); cursor: pointer; transition: all 0.15s;
-  font-family: 'Sora', sans-serif;
+  color: var(--text2); cursor: pointer; transition: all 0.15s; font-family: 'Sora',sans-serif;
 }
 .sit-btn:hover { border-color: var(--accent); color: var(--accent); }
 .sit-btn.active { background: rgba(74,222,128,0.1); border-color: var(--accent); color: var(--accent); }
-
 .chat-box {
   background: var(--surface); border: 0.5px solid var(--border);
-  border-radius: var(--radius); min-height: 300px; max-height: 400px;
-  overflow-y: auto; padding: 1.25rem; margin-bottom: 1rem;
-  display: flex; flex-direction: column; gap: 14px;
+  border-radius: var(--radius); min-height: 240px; max-height: 380px;
+  overflow-y: auto; padding: 1rem; margin-bottom: 1rem;
+  display: flex; flex-direction: column; gap: 12px;
   scrollbar-width: thin; scrollbar-color: var(--surface2) transparent;
 }
 .empty {
   display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 10px; color: var(--text3);
-  font-size: 13px; text-align: center; padding: 3rem 0; flex: 1;
+  justify-content: center; gap: 8px; color: var(--text3);
+  font-size: 13px; text-align: center; padding: 2rem 0; flex: 1;
 }
-.msg { display: flex; flex-direction: column; gap: 4px; animation: fi 0.25s ease; }
+.msg { display: flex; flex-direction: column; gap: 3px; animation: fi 0.25s ease; }
 @keyframes fi { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
 .msg.me { align-items: flex-end; }
 .msg.them { align-items: flex-start; }
 .msg-who { font-size: 10px; color: var(--text3); padding: 0 4px; text-transform: uppercase; letter-spacing: 0.3px; }
-.bubble { max-width: 78%; padding: 11px 15px; border-radius: 16px; font-size: 14px; line-height: 1.6; }
+.bubble { max-width: 85%; padding: 10px 13px; border-radius: 14px; font-size: 14px; line-height: 1.6; }
 .msg.me .bubble { background: var(--surface2); border: 0.5px solid var(--border2); border-bottom-right-radius: 4px; }
 .msg.them .bubble { background: rgba(74,222,128,0.07); border: 0.5px solid rgba(74,222,128,0.2); border-bottom-left-radius: 4px; }
-.sub { font-size: 12px; color: var(--text2); margin-top: 4px; font-style: italic; }
-
-.analysis {
-  background: var(--surface); border: 0.5px solid var(--border2);
-  border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem;
-}
-.analysis-head { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
-.ctx-pill {
-  display: inline-block; font-size: 12px; padding: 3px 11px; border-radius: 20px;
-  background: rgba(96,165,250,0.12); color: var(--info);
-  margin-bottom: 10px; border: 0.5px solid rgba(96,165,250,0.2);
-}
-.analysis-text { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
-.sug-head { font-size: 11px; color: var(--text3); margin-bottom: 8px; }
-.sug {
-  border: 0.5px solid var(--border2); border-radius: var(--radius-sm);
-  padding: 11px 14px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s;
-}
-.sug:last-child { margin-bottom: 0; }
-.sug:hover { border-color: var(--accent); background: rgba(74,222,128,0.05); }
-.sug-intent { font-size: 11px; color: var(--text3); margin-bottom: 5px; }
-.sug-indo { font-size: 14px; color: var(--text); margin-bottom: 2px; }
-.sug-thai { font-size: 12px; color: var(--text2); }
-.sug-tip { font-size: 11px; color: var(--warn); margin-top: 5px; }
+.lang-row { display: flex; gap: 6px; margin-top: 3px; align-items: baseline; }
+.lang-tag { font-size: 11px; flex-shrink: 0; }
+.lang-val { font-size: 12px; color: var(--text2); font-style: italic; }
 .speak-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  margin-top: 6px; padding: 3px 10px; border-radius: 20px;
-  border: 0.5px solid var(--border2); background: transparent;
-  color: var(--text3); font-size: 11px; cursor: pointer;
-  transition: all 0.15s; font-family: 'Sora', sans-serif;
+  display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; padding: 3px 10px;
+  border-radius: 20px; border: 0.5px solid var(--border2); background: transparent;
+  color: var(--text3); font-size: 11px; cursor: pointer; transition: all 0.15s; font-family: 'Sora',sans-serif;
 }
 .speak-btn:hover { color: var(--accent); border-color: var(--accent); }
 .speak-btn.speaking { color: var(--accent); border-color: var(--accent); }
-
-.other-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.analysis { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.analysis-head { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.ctx-pill {
+  display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 20px;
+  background: rgba(96,165,250,0.12); color: var(--info); margin-bottom: 8px; border: 0.5px solid rgba(96,165,250,0.2);
+}
+.analysis-text { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
+.sug-head { font-size: 11px; color: var(--text3); margin-bottom: 8px; }
+.sug { border: 0.5px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+.sug:last-child { margin-bottom: 0; }
+.sug:hover { border-color: var(--accent); background: rgba(74,222,128,0.05); }
+.sug-intent { font-size: 10px; color: var(--text3); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.3px; }
+.sug-indo { font-size: 14px; color: var(--text); margin-bottom: 3px; }
+.sug-en { font-size: 12px; color: var(--info); margin-bottom: 2px; }
+.sug-thai { font-size: 12px; color: var(--text2); }
+.sug-tip { font-size: 11px; color: var(--warn); margin-top: 5px; }
+.other-row { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }
 .other-lbl { font-size: 12px; color: var(--text2); white-space: nowrap; }
 .other-inp {
-  flex: 1; background: var(--surface2); border: 0.5px solid var(--border);
+  flex: 1; min-width: 0; background: var(--surface2); border: 0.5px solid var(--border);
   border-radius: var(--radius-sm); padding: 9px 12px;
-  color: var(--text); font-size: 13px; font-family: 'Sora', sans-serif;
+  color: var(--text); font-size: 13px; font-family: 'Sora',sans-serif;
 }
 .other-inp:focus { outline: none; border-color: var(--border2); }
 .other-go {
-  padding: 9px 15px; border-radius: var(--radius-sm);
-  border: 0.5px solid var(--border2); background: transparent;
-  color: var(--text2); font-size: 13px; cursor: pointer; transition: all 0.15s;
-  font-family: 'Sora', sans-serif;
+  padding: 9px 12px; border-radius: var(--radius-sm); border: 0.5px solid var(--border2);
+  background: transparent; color: var(--text2); font-size: 13px; cursor: pointer;
+  transition: all 0.15s; font-family: 'Sora',sans-serif; white-space: nowrap;
 }
 .other-go:hover { color: var(--text); border-color: var(--text3); }
 .other-go:disabled { opacity: 0.35; cursor: not-allowed; }
-
-.input-row { display: flex; gap: 8px; align-items: flex-end; }
+.input-row { display: flex; gap: 6px; align-items: flex-end; }
 .inp-wrap { flex: 1; position: relative; }
-.flag { position: absolute; left: 12px; top: 11px; font-size: 14px; pointer-events: none; }
+.flag { position: absolute; left: 11px; top: 11px; font-size: 14px; pointer-events: none; }
 textarea {
-  width: 100%; padding: 10px 12px 10px 34px;
+  width: 100%; padding: 10px 10px 10px 32px;
   background: var(--surface); border: 0.5px solid var(--border2);
   border-radius: var(--radius-sm); color: var(--text);
-  font-size: 14px; font-family: 'Sora', 'Sarabun', sans-serif;
-  resize: none; min-height: 44px; max-height: 120px; line-height: 1.5;
-  transition: border 0.15s;
+  font-size: 14px; font-family: 'Sora','Sarabun',sans-serif;
+  resize: none; min-height: 44px; max-height: 120px; line-height: 1.5; transition: border 0.15s;
 }
 textarea:focus { outline: none; border-color: var(--accent); }
 textarea::placeholder { color: var(--text3); }
 .go-btn {
-  height: 44px; padding: 0 20px; border-radius: var(--radius-sm);
+  height: 44px; padding: 0 16px; border-radius: var(--radius-sm);
   background: var(--accent); color: #000; border: none;
   font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s;
-  font-family: 'Sora', sans-serif;
+  font-family: 'Sora',sans-serif; white-space: nowrap;
 }
 .go-btn:hover { background: var(--accent2); }
 .go-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.spinner {
-  display: inline-block; width: 13px; height: 13px;
-  border: 2px solid var(--border2); border-top-color: var(--accent);
-  border-radius: 50%; animation: spin 0.6s linear infinite;
-  vertical-align: -2px; margin-right: 6px;
-}
-@keyframes spin { to{transform:rotate(360deg)} }
-
-.err-msg { color: var(--red); font-size: 12px; margin-top: 6px; }
 .mic-btn {
-  height: 44px; width: 44px; border-radius: var(--radius-sm);
+  height: 44px; width: 42px; border-radius: var(--radius-sm);
   border: 0.5px solid var(--border2); background: transparent;
-  color: var(--text2); font-size: 18px; cursor: pointer;
-  transition: all 0.15s; display: flex; align-items: center; justify-content: center;
+  color: var(--text2); font-size: 17px; cursor: pointer;
+  transition: all 0.15s; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .mic-btn:hover { border-color: var(--accent); color: var(--accent); }
 .mic-btn.recording { border-color: var(--red); color: var(--red); animation: pulse 0.8s infinite; }
 .mic-btn-sm {
-  padding: 8px 12px; border-radius: var(--radius-sm);
-  border: 0.5px solid var(--border2); background: transparent;
-  color: var(--text2); font-size: 13px; cursor: pointer;
-  transition: all 0.15s; white-space: nowrap; font-family: 'Sora', sans-serif;
+  padding: 8px 10px; border-radius: var(--radius-sm); border: 0.5px solid var(--border2);
+  background: transparent; color: var(--text2); font-size: 12px; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap; font-family: 'Sora',sans-serif; flex-shrink: 0;
 }
 .mic-btn-sm:hover { border-color: var(--accent); color: var(--accent); }
 .mic-btn-sm.recording { border-color: var(--red); color: var(--red); animation: pulse 0.8s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.spinner {
+  display: inline-block; width: 13px; height: 13px;
+  border: 2px solid var(--border2); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: -2px; margin-right: 6px;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+@media (max-width: 480px) {
+  body { padding: 0 0.75rem 1.5rem; }
+  header { padding: 1rem 0; }
+  .header-text h1 { font-size: 16px; }
+  .header-text p { font-size: 10px; }
+  .chat-box { min-height: 200px; max-height: 280px; padding: 0.75rem; }
+  .bubble { max-width: 93%; font-size: 13px; padding: 9px 11px; }
+  .go-btn { padding: 0 12px; font-size: 13px; }
+  .analysis { padding: 0.875rem 0.875rem; }
+  .sug { padding: 9px 10px; }
+  .sug-indo { font-size: 13px; }
+  .other-lbl { display: none; }
+  .sit-btn { font-size: 10px; padding: 4px 9px; }
+}
 </style>
 </head>
 <body>
 
-<!-- Login Screen -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
     <div class="login-logo">🌴</div>
@@ -255,7 +210,7 @@ textarea::placeholder { color: var(--text3); }
     <div class="logo">🌴</div>
     <div class="header-text">
       <h1>Indo Travel Talk</h1>
-      <p>แปลภาษา + วิเคราะห์สถานการณ์ สำหรับเที่ยวอินโดนีเซีย</p>
+      <p>🇹🇭 ไทย · 🇬🇧 English · 🇮🇩 Indonesia</p>
     </div>
   </header>
 
@@ -265,7 +220,7 @@ textarea::placeholder { color: var(--text3); }
     <button class="sit-btn" onclick="setSit(this,'ต่อรองราคา')">ต่อรองราคา</button>
     <button class="sit-btn" onclick="setSit(this,'สั่งอาหาร')">สั่งอาหาร</button>
     <button class="sit-btn" onclick="setSit(this,'ถามทาง')">ถามทาง</button>
-    <button class="sit-btn" onclick="setSit(this,'เช็คอินโรงแรม')">เช็คอินโรงแรม</button>
+    <button class="sit-btn" onclick="setSit(this,'เช็คอินโรงแรม')">เช็คอิน</button>
     <button class="sit-btn" onclick="setSit(this,'แท็กซี่')">แท็กซี่</button>
     <button class="sit-btn" onclick="setSit(this,'ซื้อของ')">ซื้อของ</button>
   </div>
@@ -274,15 +229,15 @@ textarea::placeholder { color: var(--text3); }
     <div class="empty" id="empty-state">
       <div style="font-size:28px;opacity:0.4;">💬</div>
       <div>พิมพ์สิ่งที่อยากพูด หรือใส่สิ่งที่อีกฝ่ายพูด</div>
-      <div style="font-size:11px;opacity:0.6;margin-top:4px;">AI จะแปลและแนะนำคำพูดต่อที่เหมาะกับสถานการณ์</div>
+      <div style="font-size:11px;opacity:0.6;margin-top:4px;">AI จะแปล 3 ภาษา + แนะนำคำพูดต่อ</div>
     </div>
   </div>
 
   <div id="analysis-area"></div>
 
   <div class="other-row">
-    <span class="other-lbl">🇮🇩 อีกฝ่ายพูดว่า:</span>
-    <input class="other-inp" id="other-inp" placeholder="พิมพ์หรือกดไมค์แล้วยื่นให้เขาพูด..." onkeydown="if(event.key==='Enter')submitOther();" />
+    <span class="other-lbl">🇮🇩 อีกฝ่าย:</span>
+    <input class="other-inp" id="other-inp" placeholder="🇮🇩 พิมพ์หรือกดไมค์ยื่นให้เขาพูด..." onkeydown="if(event.key==='Enter')submitOther();" />
     <button class="mic-btn-sm" id="mic-other" onclick="toggleMic('other')">🎙 ฟัง</button>
     <button class="other-go" id="other-btn" onclick="submitOther()">วิเคราะห์</button>
   </div>
@@ -290,11 +245,11 @@ textarea::placeholder { color: var(--text3); }
   <div class="input-row">
     <div class="inp-wrap">
       <span class="flag">🇹🇭</span>
-      <textarea id="main-inp" placeholder="พิมพ์หรือกดไมค์แล้วพูดภาษาไทย..."
+      <textarea id="main-inp" placeholder="พิมพ์หรือกดไมค์พูดภาษาไทย..."
         oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
         onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
     </div>
-    <button class="mic-btn" id="mic-main" onclick="toggleMic('main')" title="พูดภาษาไทย">🎙</button>
+    <button class="mic-btn" id="mic-main" onclick="toggleMic('main')">🎙</button>
     <button class="go-btn" id="send-btn" onclick="sendMsg()">ส่ง →</button>
   </div>
 </div>
@@ -304,8 +259,8 @@ var situation = 'ทั่วไป';
 var chatHistory = [];
 var busy = false;
 var sessionToken = '';
+var activeRec = null;
 
-// Login
 window.addEventListener('load', function() {
   var saved = sessionStorage.getItem('indo_token');
   if (saved) { sessionToken = saved; showApp(); }
@@ -318,84 +273,18 @@ async function doLogin() {
   err.textContent = '';
   try {
     var resp = await fetch('/api/login', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({password: pw})
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({password:pw})
     });
     var data = await resp.json();
-    if (data.ok) {
-      sessionToken = pw;
-      sessionStorage.setItem('indo_token', pw);
-      showApp();
-    } else {
-      err.textContent = data.error || 'รหัสผ่านไม่ถูกต้อง';
-      document.getElementById('login-pw').value = '';
-    }
-  } catch(e) {
-    err.textContent = 'เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง';
-  }
+    if (data.ok) { sessionToken = pw; sessionStorage.setItem('indo_token',pw); showApp(); }
+    else { err.textContent = data.error||'รหัสผ่านไม่ถูกต้อง'; document.getElementById('login-pw').value=''; }
+  } catch(e) { err.textContent = 'เชื่อมต่อไม่ได้ ลองใหม่'; }
 }
 
 function showApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('main-app').style.display = 'block';
-}
-var activeRec = null;
-
-function toggleMic(target) {
-  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-    alert('Browser ไม่รองรับ Speech Recognition — ลองใช้ Chrome ครับ'); return;
-  }
-  if (activeRec) {
-    activeRec.stop();
-    activeRec = null;
-    document.querySelectorAll('.mic-btn, .mic-btn-sm').forEach(function(b){ b.classList.remove('recording'); b.textContent = b.classList.contains('mic-btn') ? '🎙' : '🎙 ฟัง'; });
-    return;
-  }
-  var lang = target === 'main' ? 'th-TH' : 'id-ID';
-  var inputEl = target === 'main' ? document.getElementById('main-inp') : document.getElementById('other-inp');
-  var btnEl = target === 'main' ? document.getElementById('mic-main') : document.getElementById('mic-other');
-
-  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  var rec = new SR();
-  rec.lang = lang;
-  rec.continuous = false;
-  rec.interimResults = true;
-
-  btnEl.classList.add('recording');
-  btnEl.textContent = btnEl.classList.contains('mic-btn') ? '⏹' : '⏹ หยุด';
-  activeRec = rec;
-
-  rec.onresult = function(e) {
-    var transcript = '';
-    for (var i = e.resultIndex; i < e.results.length; i++) {
-      transcript += e.results[i][0].transcript;
-    }
-    inputEl.value = transcript;
-    if (inputEl.tagName === 'TEXTAREA') {
-      inputEl.style.height = 'auto';
-      inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
-    }
-  };
-
-  rec.onend = function() {
-    btnEl.classList.remove('recording');
-    btnEl.textContent = btnEl.classList.contains('mic-btn') ? '🎙' : '🎙 ฟัง';
-    activeRec = null;
-    if (inputEl.value.trim()) {
-      if (target === 'main') sendMsg();
-      else submitOther();
-    }
-  };
-
-  rec.onerror = function(e) {
-    btnEl.classList.remove('recording');
-    btnEl.textContent = btnEl.classList.contains('mic-btn') ? '🎙' : '🎙 ฟัง';
-    activeRec = null;
-    if (e.error !== 'no-speech') alert('Mic error: ' + e.error);
-  };
-
-  rec.start();
 }
 
 function setSit(el, s) {
@@ -404,153 +293,171 @@ function setSit(el, s) {
   el.classList.add('active');
 }
 
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function removeEmpty() { var e=document.getElementById('empty-state'); if(e) e.remove(); }
 
-function removeEmpty() {
-  var e = document.getElementById('empty-state');
-  if (e) e.remove();
-}
-
-function addMsg(who, main, sub) {
+function addMsg(who, result, original) {
   removeEmpty();
   var chat = document.getElementById('chat');
   var d = document.createElement('div');
-  d.className = 'msg ' + who;
-  var lang = who === 'me' ? 'id-ID' : 'id-ID';
-  d.innerHTML = '<div class="msg-who">'+(who==='me'?'คุณ':'อีกฝ่าย')+'</div>' +
-    '<div class="bubble">'+esc(main)+(sub?'<div class="sub">'+esc(sub)+'</div>':'') +
-    '<br><button class="speak-btn" onclick="speak(\''+main.replace(/'/g,"\\'")+'\',' +
-    '\''+lang+'\',this)">▶ พูด</button></div>';
-  chat.appendChild(d);
-  chat.scrollTop = chat.scrollHeight;
+  d.className = 'msg '+who;
+  var mainText = who==='me' ? (result.translation||original) : original;
+  var safeMain = mainText.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  var html = '<div class="msg-who">'+(who==='me'?'คุณ':'อีกฝ่าย')+'</div><div class="bubble">'+esc(mainText);
+  if (who === 'me') {
+    if (result.translation_en) html += '<div class="lang-row"><span class="lang-tag">🇬🇧</span><span class="lang-val">'+esc(result.translation_en)+'</span></div>';
+    html += '<div class="lang-row"><span class="lang-tag">🇹🇭</span><span class="lang-val">'+esc(original)+'</span></div>';
+  } else {
+    if (result.translation_en) html += '<div class="lang-row"><span class="lang-tag">🇬🇧</span><span class="lang-val">'+esc(result.translation_en)+'</span></div>';
+    if (result.translation) html += '<div class="lang-row"><span class="lang-tag">🇹🇭</span><span class="lang-val">'+esc(result.translation)+'</span></div>';
+  }
+  html += '<br><button class="speak-btn" onclick="speak(\''+safeMain+'\',\'id-ID\',this)">▶ พูด</button></div>';
+  d.innerHTML = html;
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
 }
 
 function speak(text, lang, btn) {
   window.speechSynthesis.cancel();
   var u = new SpeechSynthesisUtterance(text);
-  u.lang = lang || 'id-ID';
-  u.rate = 0.9;
+  u.lang = lang||'id-ID'; u.rate = 0.9;
   if (btn) {
-    btn.textContent = '⏸ กำลังพูด...';
-    btn.classList.add('speaking');
-    u.onend = function() { btn.textContent = '▶ พูด'; btn.classList.remove('speaking'); };
-    u.onerror = function() { btn.textContent = '▶ พูด'; btn.classList.remove('speaking'); };
+    btn.textContent='⏸ กำลังพูด...'; btn.classList.add('speaking');
+    u.onend=function(){btn.textContent='▶ พูด';btn.classList.remove('speaking');};
+    u.onerror=function(){btn.textContent='▶ พูด';btn.classList.remove('speaking');};
   }
   window.speechSynthesis.speak(u);
 }
 
 function showLoading(who) {
   removeEmpty();
-  var chat = document.getElementById('chat');
-  var d = document.createElement('div');
-  d.id = 'loading-bub'; d.className = 'msg ' + who;
-  d.innerHTML = '<div class="bubble" style="color:var(--text3)"><span class="spinner"></span>กำลังวิเคราะห์...</div>';
-  chat.appendChild(d);
-  chat.scrollTop = chat.scrollHeight;
+  var chat=document.getElementById('chat');
+  var d=document.createElement('div');
+  d.id='loading-bub'; d.className='msg '+who;
+  d.innerHTML='<div class="bubble" style="color:var(--text3)"><span class="spinner"></span>กำลังวิเคราะห์...</div>';
+  chat.appendChild(d); chat.scrollTop=chat.scrollHeight;
 }
 
-function removeLoading() {
-  var el = document.getElementById('loading-bub');
-  if (el) el.remove();
-}
+function removeLoading() { var el=document.getElementById('loading-bub'); if(el) el.remove(); }
 
 function showAnalysis(data) {
-  var sugs = data.suggestions || [];
-  var html = '<div class="analysis"><div class="analysis-head">วิเคราะห์สถานการณ์</div>' +
-    (data.context ? '<div class="ctx-pill">'+esc(data.context)+'</div>' : '') +
-    (data.analysis ? '<div class="analysis-text">'+esc(data.analysis)+'</div>' : '');
+  var sugs=data.suggestions||[];
+  var html='<div class="analysis"><div class="analysis-head">วิเคราะห์สถานการณ์</div>'+
+    (data.context?'<div class="ctx-pill">'+esc(data.context)+'</div>':'')+
+    (data.analysis?'<div class="analysis-text">'+esc(data.analysis)+'</div>':'');
   if (sugs.length) {
-    html += '<div class="sug-head">คำพูดต่อที่แนะนำ — คลิกเพื่อใช้</div>';
-    sugs.forEach(function(s, i) {
-      var i2 = (s.indo||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      var t2 = (s.thai||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      html += '<div class="sug" onclick="useSug(\''+i2+'\',\''+t2+'\')">' +
-        '<div class="sug-intent">ตัวเลือก '+(i+1)+(s.intent?' — '+esc(s.intent):'')+'</div>' +
-        '<div class="sug-indo">🇮🇩 '+esc(s.indo||'')+'</div>' +
-        '<div class="sug-thai">🇹🇭 '+esc(s.thai||'')+'</div>' +
+    html+='<div class="sug-head">คำพูดต่อที่แนะนำ — แตะเพื่อใช้</div>';
+    sugs.forEach(function(s,i){
+      var i2=(s.indo||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      var t2=(s.thai||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      html+='<div class="sug" onclick="useSug(\''+i2+'\',\''+t2+'\')">'+
+        '<div class="sug-intent">ตัวเลือก '+(i+1)+(s.intent?' — '+esc(s.intent):'')+'</div>'+
+        '<div class="sug-indo">🇮🇩 '+esc(s.indo||'')+'</div>'+
+        (s.english?'<div class="sug-en">🇬🇧 '+esc(s.english)+'</div>':'')+
+        '<div class="sug-thai">🇹🇭 '+esc(s.thai||'')+'</div>'+
         (s.tip?'<div class="sug-tip">⚡ '+esc(s.tip)+'</div>':'')+
         '<button class="speak-btn" onclick="event.stopPropagation();speak(\''+i2+'\',\'id-ID\',this)">▶ ฟังเสียง</button>'+
         '</div>';
     });
   }
-  html += '</div>';
-  document.getElementById('analysis-area').innerHTML = html;
+  html+='</div>';
+  document.getElementById('analysis-area').innerHTML=html;
 }
 
 function useSug(indo, thai) {
-  addMsg('me', indo, '('+thai+')');
-  chatHistory.push({role:'user', content:'[เลือกพูดว่า]: "'+indo+'" ความหมาย: "'+thai+'"'});
-  document.getElementById('analysis-area').innerHTML = '';
+  addMsg('me',{translation:indo,translation_en:''},thai);
+  chatHistory.push({role:'user',content:'[เลือกพูดว่า]: "'+indo+'" ความหมาย: "'+thai+'"'});
+  document.getElementById('analysis-area').innerHTML='';
 }
 
 function setBusy(v) {
-  busy = v;
-  document.getElementById('send-btn').disabled = v;
-  document.getElementById('other-btn').disabled = v;
+  busy=v;
+  document.getElementById('send-btn').disabled=v;
+  document.getElementById('other-btn').disabled=v;
+}
+
+function toggleMic(target) {
+  if (!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)) { alert('ใช้ Chrome เพื่อเปิดไมค์ครับ'); return; }
+  if (activeRec) {
+    activeRec.stop(); activeRec=null;
+    document.querySelectorAll('.mic-btn,.mic-btn-sm').forEach(function(b){
+      b.classList.remove('recording');
+      b.textContent=b.classList.contains('mic-btn')?'🎙':'🎙 ฟัง';
+    });
+    return;
+  }
+  var lang=target==='main'?'th-TH':'id-ID';
+  var inputEl=target==='main'?document.getElementById('main-inp'):document.getElementById('other-inp');
+  var btnEl=target==='main'?document.getElementById('mic-main'):document.getElementById('mic-other');
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var rec=new SR();
+  rec.lang=lang; rec.continuous=false; rec.interimResults=true;
+  btnEl.classList.add('recording');
+  btnEl.textContent=btnEl.classList.contains('mic-btn')?'⏹':'⏹ หยุด';
+  activeRec=rec;
+  rec.onresult=function(e){
+    var t='';
+    for(var i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript;
+    inputEl.value=t;
+    if(inputEl.tagName==='TEXTAREA'){inputEl.style.height='auto';inputEl.style.height=Math.min(inputEl.scrollHeight,120)+'px';}
+  };
+  rec.onend=function(){
+    btnEl.classList.remove('recording');
+    btnEl.textContent=btnEl.classList.contains('mic-btn')?'🎙':'🎙 ฟัง';
+    activeRec=null;
+    if(inputEl.value.trim()){if(target==='main')sendMsg();else submitOther();}
+  };
+  rec.onerror=function(e){
+    btnEl.classList.remove('recording');
+    btnEl.textContent=btnEl.classList.contains('mic-btn')?'🎙':'🎙 ฟัง';
+    activeRec=null;
+    if(e.error!=='no-speech') alert('Mic error: '+e.error);
+  };
+  rec.start();
 }
 
 async function callClaude(userMsg) {
-  var sys = 'คุณเป็น AI ผู้ช่วยแปลภาษาสำหรับนักท่องเที่ยวไทยในอินโดนีเซีย\nสถานการณ์ปัจจุบัน: '+situation+'\n\nตอบเป็น JSON เท่านั้น ไม่มีข้อความอื่น ไม่มี markdown:\n{"translation":"คำแปล","context":"label สั้น","analysis":"วิเคราะห์ 1-2 ประโยค","suggestions":[{"intent":"ชื่อเจตนา","indo":"ประโยคอินโด","thai":"ความหมายไทย","tip":"เคล็ดลับ (optional)"}]}';
-  var resp = await fetch('/chat', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json', 'X-Session-Token': sessionToken},
-    body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 1000,
-      system: sys,
-      messages: chatHistory.concat([{role:'user', content:userMsg}])
-    })
+  var sys='คุณเป็น AI ผู้ช่วยแปลภาษาสำหรับนักท่องเที่ยวไทยในอินโดนีเซีย\nสถานการณ์ปัจจุบัน: '+situation+'\n\nตอบเป็น JSON เท่านั้น ไม่มีข้อความอื่น ไม่มี markdown:\n{"translation":"แปลเป็นภาษาไทย","translation_en":"แปลเป็นภาษาอังกฤษ","context":"label สั้น","analysis":"วิเคราะห์สถานการณ์ 1-2 ประโยค","suggestions":[{"intent":"ชื่อเจตนาสั้น","indo":"ประโยคภาษาอินโดนีเซีย","english":"ประโยคภาษาอังกฤษ","thai":"ความหมายภาษาไทย","tip":"เคล็ดลับสั้น (optional)"}]}';
+  var resp=await fetch('/chat',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','X-Session-Token':sessionToken},
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1200,system:sys,messages:chatHistory.concat([{role:'user',content:userMsg}])})
   });
-  var data = await resp.json();
-  if (data.error) throw new Error(typeof data.error === 'string' ? data.error : data.error.message);
-  var raw = (data.content && data.content[0] && data.content[0].text) || '{}';
-  raw = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();
+  var data=await resp.json();
+  if(data.error) throw new Error(typeof data.error==='string'?data.error:data.error.message);
+  var raw=(data.content&&data.content[0]&&data.content[0].text)||'{}';
+  raw=raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();
   return JSON.parse(raw);
 }
 
 async function sendMsg() {
-  if (busy) return;
-  var inp = document.getElementById('main-inp');
-  var text = inp.value.trim();
-  if (!text) return;
-  setBusy(true);
-  inp.value = ''; inp.style.height = 'auto';
+  if(busy) return;
+  var inp=document.getElementById('main-inp');
+  var text=inp.value.trim();
+  if(!text) return;
+  setBusy(true); inp.value=''; inp.style.height='auto';
   showLoading('me');
-  chatHistory.push({role:'user', content:'[ผู้ใช้ต้องการพูดว่า]: "'+text+'" สถานการณ์: '+situation});
+  chatHistory.push({role:'user',content:'[ผู้ใช้ต้องการพูดว่า]: "'+text+'" สถานการณ์: '+situation});
   try {
-    var result = await callClaude('แปลเป็นอินโดนีเซียและวิเคราะห์: "'+text+'"');
-    removeLoading();
-    addMsg('me', result.translation || text, '('+text+')');
-    showAnalysis(result);
-    chatHistory.push({role:'assistant', content:JSON.stringify(result)});
-  } catch(e) {
-    removeLoading();
-    addMsg('me', text, '❌ ' + e.message);
-  }
+    var result=await callClaude('แปลเป็นอินโดนีเซียและอังกฤษ แล้ววิเคราะห์: "'+text+'"');
+    removeLoading(); addMsg('me',result,text); showAnalysis(result);
+    chatHistory.push({role:'assistant',content:JSON.stringify(result)});
+  } catch(e) { removeLoading(); addMsg('me',{translation:text,translation_en:''},'❌ '+e.message); }
   setBusy(false);
 }
 
 async function submitOther() {
-  if (busy) return;
-  var inp = document.getElementById('other-inp');
-  var text = inp.value.trim();
-  if (!text) return;
-  setBusy(true);
-  inp.value = '';
+  if(busy) return;
+  var inp=document.getElementById('other-inp');
+  var text=inp.value.trim();
+  if(!text) return;
+  setBusy(true); inp.value='';
   showLoading('them');
-  chatHistory.push({role:'user', content:'[อีกฝ่ายพูด]: "'+text+'"'});
+  chatHistory.push({role:'user',content:'[อีกฝ่ายพูด]: "'+text+'"'});
   try {
-    var result = await callClaude('อีกฝ่ายพูดว่า: "'+text+'" — แปลเป็นไทยและแนะนำคำตอบ');
-    removeLoading();
-    addMsg('them', text, result.translation ? '→ '+result.translation : '');
-    showAnalysis(result);
-    chatHistory.push({role:'assistant', content:JSON.stringify(result)});
-  } catch(e) {
-    removeLoading();
-    addMsg('them', text, '❌ ' + e.message);
-  }
+    var result=await callClaude('อีกฝ่ายพูดว่า: "'+text+'" — แปลเป็นไทยและอังกฤษ แล้วแนะนำคำตอบ');
+    removeLoading(); addMsg('them',result,text); showAnalysis(result);
+    chatHistory.push({role:'assistant',content:JSON.stringify(result)});
+  } catch(e) { removeLoading(); addMsg('them',{translation:'',translation_en:''},text); }
   setBusy(false);
 }
 </script>

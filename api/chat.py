@@ -18,7 +18,6 @@ class handler(BaseHTTPRequestHandler):
             self._json({'error': 'API key not configured'}, 500)
             return
 
-        # Check session token
         app_password = os.environ.get('APP_PASSWORD', '')
         token = self.headers.get('X-Session-Token', '')
         if app_password and token != app_password:
