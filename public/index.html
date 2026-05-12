@@ -38,7 +38,9 @@ body::before {
 .login-title {
   font-size: 18px; font-weight: 600; margin-bottom: 4px;
   background: linear-gradient(135deg,#4ade80,#60a5fa);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; 
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .login-sub { font-size: 12px; color: var(--text3); margin-bottom: 1.5rem; }
 .login-input {
@@ -60,7 +62,9 @@ header { padding: 1.5rem 0 1.25rem; display: flex; align-items: center; gap: 12p
 .header-text h1 {
   font-size: 18px; font-weight: 600; letter-spacing: -0.3px;
   background: linear-gradient(135deg,#4ade80,#60a5fa);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .header-text p { font-size: 11px; color: var(--text3); margin-top: 2px; }
 .sit-wrap { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
@@ -210,7 +214,7 @@ textarea::placeholder { color: var(--text3); }
     <div class="logo">🌴</div>
     <div class="header-text">
       <h1>Indo Travel Talk</h1>
-      <p>🇹🇭 ไทย · 🇬🇧 English · 🇮🇩 Indonesia</p>
+      <p>TH ไทย · EN English · ID Indonesia</p>
     </div>
   </header>
 
@@ -236,15 +240,15 @@ textarea::placeholder { color: var(--text3); }
   <div id="analysis-area"></div>
 
   <div class="other-row">
-    <span class="other-lbl">🇮🇩 อีกฝ่าย:</span>
-    <input class="other-inp" id="other-inp" placeholder="🇮🇩 พิมพ์หรือกดไมค์ยื่นให้เขาพูด..." onkeydown="if(event.key==='Enter')submitOther();" />
+    <span class="other-lbl">ID อีกฝ่าย:</span>
+    <input class="other-inp" id="other-inp" placeholder="ID พิมพ์หรือกดไมค์ยื่นให้เขาพูด..." onkeydown="if(event.key==='Enter')submitOther();" />
     <button class="mic-btn-sm" id="mic-other" onclick="toggleMic('other')">🎙 ฟัง</button>
     <button class="other-go" id="other-btn" onclick="submitOther()">วิเคราะห์</button>
   </div>
 
   <div class="input-row">
     <div class="inp-wrap">
-      <span class="flag">🇹🇭</span>
+      <span class="flag">TH</span>
       <textarea id="main-inp" placeholder="พิมพ์หรือกดไมค์พูดภาษาไทย..."
         oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
         onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
@@ -305,11 +309,11 @@ function addMsg(who, result, original) {
   var safeMain = mainText.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   var html = '<div class="msg-who">'+(who==='me'?'คุณ':'อีกฝ่าย')+'</div><div class="bubble">'+esc(mainText);
   if (who === 'me') {
-    if (result.translation_en) html += '<div class="lang-row"><span class="lang-tag">🇬🇧</span><span class="lang-val">'+esc(result.translation_en)+'</span></div>';
-    html += '<div class="lang-row"><span class="lang-tag">🇹🇭</span><span class="lang-val">'+esc(original)+'</span></div>';
+    if (result.translation_en) html += '<div class="lang-row"><span class="lang-tag">EN</span><span class="lang-val">'+esc(result.translation_en)+'</span></div>';
+    html += '<div class="lang-row"><span class="lang-tag">TH</span><span class="lang-val">'+esc(original)+'</span></div>';
   } else {
-    if (result.translation_en) html += '<div class="lang-row"><span class="lang-tag">🇬🇧</span><span class="lang-val">'+esc(result.translation_en)+'</span></div>';
-    if (result.translation) html += '<div class="lang-row"><span class="lang-tag">🇹🇭</span><span class="lang-val">'+esc(result.translation)+'</span></div>';
+    if (result.translation_en) html += '<div class="lang-row"><span class="lang-tag">EN</span><span class="lang-val">'+esc(result.translation_en)+'</span></div>';
+    if (result.translation) html += '<div class="lang-row"><span class="lang-tag">TH</span><span class="lang-val">'+esc(result.translation)+'</span></div>';
   }
   html += '<br><button class="speak-btn" onclick="speak(\''+safeMain+'\',\'id-ID\',this)">▶ พูด</button></div>';
   d.innerHTML = html;
@@ -351,9 +355,9 @@ function showAnalysis(data) {
       var t2=(s.thai||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       html+='<div class="sug" onclick="useSug(\''+i2+'\',\''+t2+'\')">'+
         '<div class="sug-intent">ตัวเลือก '+(i+1)+(s.intent?' — '+esc(s.intent):'')+'</div>'+
-        '<div class="sug-indo">🇮🇩 '+esc(s.indo||'')+'</div>'+
-        (s.english?'<div class="sug-en">🇬🇧 '+esc(s.english)+'</div>':'')+
-        '<div class="sug-thai">🇹🇭 '+esc(s.thai||'')+'</div>'+
+        '<div class="sug-indo">ID '+esc(s.indo||'')+'</div>'+
+        (s.english?'<div class="sug-en">EN '+esc(s.english)+'</div>':'')+
+        '<div class="sug-thai">TH '+esc(s.thai||'')+'</div>'+
         (s.tip?'<div class="sug-tip">⚡ '+esc(s.tip)+'</div>':'')+
         '<button class="speak-btn" onclick="event.stopPropagation();speak(\''+i2+'\',\'id-ID\',this)">▶ ฟังเสียง</button>'+
         '</div>';
