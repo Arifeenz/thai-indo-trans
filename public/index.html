@@ -122,6 +122,20 @@ header { padding: 1.5rem 0 1.25rem; display: flex; align-items: center; gap: 12p
 .sug-en { font-size: 12px; color: var(--info); margin-bottom: 2px; }
 .sug-thai { font-size: 12px; color: var(--text2); }
 .sug-tip { font-size: 11px; color: var(--warn); margin-top: 5px; }
+.lang-sel-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+.lang-sel-label { font-size: 11px; color: var(--text3); white-space: nowrap; }
+.lang-sel-btn {
+  font-size: 11px; padding: 4px 12px; border-radius: 20px;
+  border: 0.5px solid var(--border2); background: transparent;
+  color: var(--text2); cursor: pointer; transition: all 0.15s; font-family: 'Sora',sans-serif;
+}
+.lang-sel-btn:hover { border-color: var(--accent); color: var(--accent); }
+.lang-sel-btn.active { background: rgba(74,222,128,0.1); border-color: var(--accent); color: var(--accent); }
+.mic-status {
+  font-size: 11px; color: var(--red); padding: 4px 0 2px;
+  min-height: 18px; display: flex; align-items: center; gap: 5px;
+}
+.mic-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: pulse 0.8s infinite; display: inline-block; }
 .other-row { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }
 .other-lbl { font-size: 12px; color: var(--text2); white-space: nowrap; }
 .other-inp {
@@ -239,11 +253,20 @@ textarea::placeholder { color: var(--text3); }
 
   <div id="analysis-area"></div>
 
+  <div class="lang-sel-row">
+    <span class="lang-sel-label">ภาษาอีกฝ่าย:</span>
+    <button class="lang-sel-btn active" id="lang-id" onclick="setLang('id-ID',this)">🇮🇩 อินโดนีเซีย</button>
+    <button class="lang-sel-btn" id="lang-jv" onclick="setLang('jv-ID',this)">☕ ชวา (Javanese)</button>
+  </div>
+
   <div class="other-row">
-    <span class="other-lbl">ID อีกฝ่าย:</span>
-    <input class="other-inp" id="other-inp" placeholder="ID พิมพ์หรือกดไมค์ยื่นให้เขาพูด..." onkeydown="if(event.key==='Enter')submitOther();" />
-    <button class="mic-btn-sm" id="mic-other" onclick="toggleMic('other')">🎙 ฟัง</button>
+    <span class="other-lbl">อีกฝ่าย:</span>
+    <input class="other-inp" id="other-inp" placeholder="พิมพ์ หรือกดไมค์ยื่นให้เขาพูด..." onkeydown="if(event.key==='Enter')submitOther();" />
+    <button class="mic-btn-sm" id="mic-other" onclick="toggleOtherMic()">🎙 ฟัง</button>
     <button class="other-go" id="other-btn" onclick="submitOther()">วิเคราะห์</button>
+  </div>
+  <div class="mic-status" id="mic-status" style="display:none;">
+    <span class="dot"></span> กำลังฟัง… กด ⏹ หยุด แล้ววิเคราะห์
   </div>
 
   <div class="input-row">
@@ -264,6 +287,13 @@ var chatHistory = [];
 var busy = false;
 var sessionToken = '';
 var activeRec = null;
+var otherLang = 'id-ID';
+
+function setLang(lang, el) {
+  otherLang = lang;
+  document.querySelectorAll('.lang-sel-btn').forEach(function(b){ b.classList.remove('active'); });
+  el.classList.add('active');
+}
 
 window.addEventListener('load', function() {
   var saved = sessionStorage.getItem('indo_token');
@@ -379,48 +409,107 @@ function setBusy(v) {
   document.getElementById('other-btn').disabled=v;
 }
 
-function toggleMic(target) {
-  if (!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)) { alert('ใช้ Chrome เพื่อเปิดไมค์ครับ'); return; }
+function toggleOtherMic() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('ใช้ Chrome เพื่อเปิดไมค์ครับ'); return;
+  }
+  var btn = document.getElementById('mic-other');
+  var status = document.getElementById('mic-status');
+  var inputEl = document.getElementById('other-inp');
+
+  // If already recording → stop and analyse
   if (activeRec) {
-    activeRec.stop(); activeRec=null;
+    activeRec.stop(); activeRec = null;
+    btn.classList.remove('recording');
+    btn.textContent = '🎙 ฟัง';
+    status.style.display = 'none';
+    if (inputEl.value.trim()) submitOther();
+    return;
+  }
+
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var rec = new SR();
+  // Use selected language; Javanese falls back to Indonesian ASR on most browsers
+  rec.lang = otherLang === 'jv-ID' ? 'jv-ID' : 'id-ID';
+  rec.continuous = true;       // keep listening until user stops
+  rec.interimResults = true;
+  activeRec = rec;
+
+  btn.classList.add('recording');
+  btn.textContent = '⏹ หยุด';
+  status.style.display = 'flex';
+  inputEl.value = '';
+
+  var finalTranscript = '';
+  rec.onresult = function(e) {
+    var interim = '';
+    for (var i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) finalTranscript += e.results[i][0].transcript + ' ';
+      else interim += e.results[i][0].transcript;
+    }
+    inputEl.value = (finalTranscript + interim).trim();
+  };
+
+  rec.onend = function() {
+    // continuous rec can auto-stop on silence — restart if user hasn't pressed stop
+    if (activeRec) { try { rec.start(); } catch(e) {} }
+  };
+
+  rec.onerror = function(e) {
+    if (e.error === 'no-speech') return; // ignore silence errors in continuous mode
+    activeRec = null;
+    btn.classList.remove('recording');
+    btn.textContent = '🎙 ฟัง';
+    status.style.display = 'none';
+    alert('Mic error: ' + e.error);
+  };
+
+  rec.start();
+}
+
+function toggleMic(target) {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { alert('ใช้ Chrome เพื่อเปิดไมค์ครับ'); return; }
+  if (activeRec) {
+    activeRec.stop(); activeRec = null;
     document.querySelectorAll('.mic-btn,.mic-btn-sm').forEach(function(b){
       b.classList.remove('recording');
-      b.textContent=b.classList.contains('mic-btn')?'🎙':'🎙 ฟัง';
+      b.textContent = b.classList.contains('mic-btn') ? '🎙' : '🎙 ฟัง';
     });
     return;
   }
-  var lang=target==='main'?'th-TH':'id-ID';
-  var inputEl=target==='main'?document.getElementById('main-inp'):document.getElementById('other-inp');
-  var btnEl=target==='main'?document.getElementById('mic-main'):document.getElementById('mic-other');
-  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  var rec=new SR();
-  rec.lang=lang; rec.continuous=false; rec.interimResults=true;
+  var lang = 'th-TH';
+  var inputEl = document.getElementById('main-inp');
+  var btnEl = document.getElementById('mic-main');
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var rec = new SR();
+  rec.lang = lang; rec.continuous = false; rec.interimResults = true;
   btnEl.classList.add('recording');
-  btnEl.textContent=btnEl.classList.contains('mic-btn')?'⏹':'⏹ หยุด';
-  activeRec=rec;
-  rec.onresult=function(e){
-    var t='';
-    for(var i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript;
-    inputEl.value=t;
-    if(inputEl.tagName==='TEXTAREA'){inputEl.style.height='auto';inputEl.style.height=Math.min(inputEl.scrollHeight,120)+'px';}
+  btnEl.textContent = '⏹';
+  activeRec = rec;
+  rec.onresult = function(e) {
+    var t = '';
+    for (var i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
+    inputEl.value = t;
+    if (inputEl.tagName === 'TEXTAREA') { inputEl.style.height = 'auto'; inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px'; }
   };
-  rec.onend=function(){
+  rec.onend = function() {
     btnEl.classList.remove('recording');
-    btnEl.textContent=btnEl.classList.contains('mic-btn')?'🎙':'🎙 ฟัง';
-    activeRec=null;
-    if(inputEl.value.trim()){if(target==='main')sendMsg();else submitOther();}
+    btnEl.textContent = '🎙';
+    activeRec = null;
+    if (inputEl.value.trim()) sendMsg();
   };
-  rec.onerror=function(e){
+  rec.onerror = function(e) {
     btnEl.classList.remove('recording');
-    btnEl.textContent=btnEl.classList.contains('mic-btn')?'🎙':'🎙 ฟัง';
-    activeRec=null;
-    if(e.error!=='no-speech') alert('Mic error: '+e.error);
+    btnEl.textContent = '🎙';
+    activeRec = null;
+    if (e.error !== 'no-speech') alert('Mic error: ' + e.error);
   };
   rec.start();
 }
 
 async function callClaude(userMsg) {
-  var sys='คุณเป็น AI ผู้ช่วยแปลภาษาสำหรับนักท่องเที่ยวไทยในอินโดนีเซีย\nสถานการณ์ปัจจุบัน: '+situation+'\n\nตอบเป็น JSON เท่านั้น ไม่มีข้อความอื่น ไม่มี markdown:\n{"translation":"แปลเป็นภาษาไทย","translation_en":"แปลเป็นภาษาอังกฤษ","context":"label สั้น","analysis":"วิเคราะห์สถานการณ์ 1-2 ประโยค","suggestions":[{"intent":"ชื่อเจตนาสั้น","indo":"ประโยคภาษาอินโดนีเซีย","english":"ประโยคภาษาอังกฤษ","thai":"ความหมายภาษาไทย","tip":"เคล็ดลับสั้น (optional)"}]}';
+  var langName = otherLang === 'jv-ID' ? 'ชวา (Javanese)' : 'อินโดนีเซีย';
+  var sys='คุณเป็น AI ผู้ช่วยแปลภาษาสำหรับนักเรียน Comsci ไทยในค่ายแลกเปลี่ยนอินโดนีเซีย\nสถานการณ์ปัจจุบัน: '+situation+'\nภาษาของอีกฝ่าย: '+langName+'\n\nตอบเป็น JSON เท่านั้น ไม่มีข้อความอื่น ไม่มี markdown:\n{"translation":"แปลเป็นภาษาไทย","translation_en":"แปลเป็นภาษาอังกฤษ","context":"label สั้น","analysis":"วิเคราะห์สถานการณ์ 1-2 ประโยค","suggestions":[{"intent":"ชื่อเจตนาสั้น","indo":"ประโยคภาษาอินโดนีเซีย","english":"ประโยคภาษาอังกฤษ","thai":"ความหมายภาษาไทย","tip":"เคล็ดลับสั้น (optional)"}]}';
   var resp=await fetch('/chat',{
     method:'POST',
     headers:{'Content-Type':'application/json','X-Session-Token':sessionToken},
